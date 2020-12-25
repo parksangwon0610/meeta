@@ -1,0 +1,18 @@
+{
+  "name": "meeta",
+  "version": "1.0.0",
+  "description": "Meeta Server",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Sangwon Park",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.19.1",
+    "graphql": "^15.4.0",
+    "lodash": "^4.17.20",
+    "mongoose": "^5.11.8"
+  }
+}
