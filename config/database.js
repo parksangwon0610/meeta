@@ -1,12 +1,23 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/meeta',{
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+const MONGO_URI = 'mongodb://localhost:27017/meeta';
+mongoose.connect(
+        MONGO_URI,
+        {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        }
+    );
 
 const db = mongoose.connection;
-db.on('error', console.error);
-db.once('open', function(){
-  console.log("Connection to meeta mongodb");
-});
+db.then(db => {
+        console.log('mongo data connected');
+        return db;
+    }).catch(err => {
+        if(err.message.code === 'ETIMEDOUT') {
+            console.log('Attempting to re-establish database connection') 
+            mongoose.connect(MONGO_URI);
+        } else {
+            console.log('Error while sattempting to connect to database: ' + err);
+        }
+    });

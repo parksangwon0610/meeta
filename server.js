@@ -9,7 +9,6 @@ const server = new ApolloServer({
     typeDefs, 
     resolvers,
     context: ({req, res}) => {
-        console.log('req - ', req.body);
     }
 });
 
