@@ -15,5 +15,9 @@
     "graphql": "^15.4.0",
     "lodash": "^4.17.20",
     "mongoose": "^5.11.8"
+  },
+  "devDependencies": {
+    "@types/mongoose": "^5.10.3",
+    "ts-node": "^9.1.1"
   }
 }
