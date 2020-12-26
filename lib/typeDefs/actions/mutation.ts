@@ -1,6 +1,6 @@
-const { gql } = require('apollo-server');
+import { gql } from 'apollo-server';
 
-const Query = gql`
+export const Query = gql`
     input CreateUserInput {
         id: String!
         password: String!
@@ -23,4 +23,4 @@ const Query = gql`
     }
 `
 
-module.exports = Query;
+export default Query;

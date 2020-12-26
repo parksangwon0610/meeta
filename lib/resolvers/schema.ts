@@ -2,8 +2,9 @@ const { merge } = require('lodash');
 
 const User = require('./user');
 
-const resolvers = merge(
+export const resolvers = merge(
     User.resolvers
 );
 
-module.exports = resolvers;
+// module.exports = resolvers;
+export default resolvers;
