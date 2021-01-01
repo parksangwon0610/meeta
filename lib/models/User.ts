@@ -1,3 +1,5 @@
+import { Document, Types, Model, model } from "mongoose";
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -9,15 +11,16 @@ const UserSchema = new Schema({
     name: {type: String, required: true},
     created: {type: Date, default: Date.now},
     accessTime: {type: Date},
-    // status: {
-    //     type: String,
-    //     enum: [
-    //         'JOIN',
-    //         'LEAVE',
-    //         'DROP'
-    //     ]
-    // }
 });
+
+export interface User extends Document {
+    id: string;
+    password: string;
+    name: string;
+    created?: Date;
+    accessTime?: Date;
+}
+
 
 /**
  * 사용자를 생성합니다. id, password, name 을 required input 으로, 
@@ -26,15 +29,18 @@ const UserSchema = new Schema({
  * @params params CreateUserInput
  * @returns returns User
  */
-UserSchema.statics.create = async function (params) {
+UserSchema.statics.createMember = async function (
+        this: Model<User>,
+        params: any
+    ) {
     const {
         id,
         password,
         name
     } = params.input;
 
-    const hashedPwd = await crypto.hashing(password);
-    const createdUser = await this({
+    const hashedPwd:string = await crypto.hashing(password);
+    const createdUser:User = await new this({
         name,
         id,
         password: hashedPwd,
@@ -48,22 +54,27 @@ UserSchema.statics.create = async function (params) {
  * @params params 사용자 아이디와 비밀번호
  * @returns User | undefined
  */
-UserSchema.statics.login = async function (params) {
+UserSchema.statics.login = async function (this: Model<User>, params: any) {
     const {
         id: userId,
         password
     } = params.input;
+    console.log('params', params);
 
-    const foundUser = await this.findOne({id: userId});
+    const foundUser: User | null = await this.findOne({id: userId});
     if(!foundUser) {
         throw new Error('no User found');
     }
 
-    const originPwd = foundUser.password;
-    const hashedPwd = await crypto.hashing(password);
+    const originPwd:string = foundUser.password;
+    const hashedPwd:string = await crypto.hashing(password);
 
     return (originPwd === hashedPwd) ? foundUser : undefined;
 };
 
-mongoose.model('user', UserSchema);
-module.exports = UserSchema;
+export interface UserModel extends Model<User> {
+    createMember(params: any): User,
+    login(params: any): User
+}
+
+export default model<User, UserModel>('user', UserSchema);
