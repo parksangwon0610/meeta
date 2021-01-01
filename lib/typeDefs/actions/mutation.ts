@@ -1,6 +1,7 @@
 import { gql } from 'apollo-server';
 
 export const Query = gql`
+    # User Input Type
     input CreateUserInput {
         id: String!
         password: String!
@@ -14,26 +15,27 @@ export const Query = gql`
         id: String!
         password: String!
     },
+
+    # Room Input Type
     input CreateRoomInput {
         name: String!
         type: RoomType
         password: String
+        info: RoomInfoInput
+    }
+    input RoomInfoInput {
+        turnTime: Int!
+        memberCount: Int!
+        commentCycle: Int!
     }
 
     type Mutation {
-        createUser(
-            input: CreateUserInput
-        ): User
-        updateUser(
-            input: UpdateUserInput
-        ): User
-        # deleteUser: User
-        loginUser (
-            input: LoginUserInput
-        ): User
-        createRoom(
-            input: CreateRoomInput
-        ): Room
+        # User
+        createUser(input: CreateUserInput): User
+        updateUser(input: UpdateUserInput): User
+        loginUser(input: LoginUserInput): User
+        # Room
+        createRoom(input: CreateRoomInput): Room
     }
 `
 

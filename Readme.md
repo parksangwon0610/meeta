@@ -4,13 +4,19 @@ $ npm install or yarn install
 $ yarn develop
 ```
 # Playground
-* http://localhost:4000/ 
+* http://localhost:4000/
 
-# API
+# API List
+
 ## QUERY
 * user
+
 ## MUTATION
+### User
 * createUser
 * updateUser
 * login
+### Room
+* createRoom
+
 ## SUBSCRIPTION

@@ -6,7 +6,13 @@ export const typeDefs = gql`
         password: String
         created: Float
         type: RoomType
-        # status: 
+        info: RoomInfo
+    }
+    type RoomInfo {
+        totalTime: Int
+        turnTime: Int
+        memberCount: Int
+        commentCycle: Int
     }
 `
 
