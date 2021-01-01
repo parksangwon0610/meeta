@@ -14,6 +14,11 @@ export const Query = gql`
         id: String!
         password: String!
     },
+    input CreateRoomInput {
+        name: String!
+        type: RoomType
+        password: String
+    }
 
     type Mutation {
         createUser(
@@ -26,6 +31,9 @@ export const Query = gql`
         loginUser (
             input: LoginUserInput
         ): User
+        createRoom(
+            input: CreateRoomInput
+        ): Room
     }
 `
 

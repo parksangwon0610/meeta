@@ -1,12 +1,11 @@
 import { gql } from 'apollo-server';
 
 export const typeDefs = gql`
-    type User {
+    type Room {
         name: String!
-        id: String!
-        password: String!
+        password: String
         created: Float
-        accessTime: Float
+        type: RoomType
         # status: 
     }
 `

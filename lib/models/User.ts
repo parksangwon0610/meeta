@@ -21,6 +21,10 @@ export interface User extends Document {
     accessTime?: Date;
 }
 
+export interface AdministratorUser extends User {
+    roomId: string;
+}
+
 
 /**
  * 사용자를 생성합니다. id, password, name 을 required input 으로, 
@@ -62,13 +66,14 @@ UserSchema.statics.updateMember = async function (
             name: newName,
             
         } = params.input;
-        console.log('username', newName);
+
         const updatedUser: User | null = await this.findOneAndUpdate(
             {id: userId},
             {$set: {name: newName}})
-        console.log('updatedUser', updatedUser);
+
         return updatedUser;
     }
+
 /**
  * 사용자의 정보로 로그인요청을 처리합니다.
  * @params params 사용자 아이디와 비밀번호
