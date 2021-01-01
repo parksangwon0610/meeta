@@ -14,6 +14,10 @@ export const resolvers = {
             const createdUser = User.createMember(args);
             return createdUser;
         },
+        updateUser: (root: any, args: any, context: any) => {
+            const updatedUser = User.updateMember(args);
+            return updatedUser;
+        },
         loginUser: (root: any, args: any, context: any) => {
             const loginUser = User.login(args);
             return loginUser;

@@ -6,11 +6,11 @@ const Schema = mongoose.Schema;
 const crypto = require('../utils/cryptoUtils');
 
 const UserSchema = new Schema({
-    id: {type: String, required: true},
+    id: {type: String, required: true, unique: true},
     password: {type: String, required: true},
     name: {type: String, required: true},
     created: {type: Date, default: Date.now},
-    accessTime: {type: Date},
+    accessTime: {type: Date, default: Date.now},
 });
 
 export interface User extends Document {
@@ -33,22 +33,42 @@ UserSchema.statics.createMember = async function (
         this: Model<User>,
         params: any
     ) {
-    const {
-        id,
-        password,
-        name
-    } = params.input;
+        const {
+            id,
+            password,
+            name
+        } = params.input;
 
-    const hashedPwd:string = await crypto.hashing(password);
-    const createdUser:User = await new this({
-        name,
-        id,
-        password: hashedPwd,
-    }).save();
+        const hashedPwd:string = await crypto.hashing(password);
+        const createdUser:User = await new this({
+            name,
+            id,
+            password: hashedPwd,
+        }).save();
 
-    return createdUser;
-}
+        return createdUser;
+    }
 
+/**
+ * 사용자의 정보를 수정합니다. 현재는 name 만 수정가능
+ * 
+ */
+UserSchema.statics.updateMember = async function (
+        this: Model<User>,
+        params: any
+    ) {
+        const {
+            id: userId,
+            name: newName,
+            
+        } = params.input;
+        console.log('username', newName);
+        const updatedUser: User | null = await this.findOneAndUpdate(
+            {id: userId},
+            {$set: {name: newName}})
+        console.log('updatedUser', updatedUser);
+        return updatedUser;
+    }
 /**
  * 사용자의 정보로 로그인요청을 처리합니다.
  * @params params 사용자 아이디와 비밀번호
@@ -59,21 +79,24 @@ UserSchema.statics.login = async function (this: Model<User>, params: any) {
         id: userId,
         password
     } = params.input;
-    console.log('params', params);
 
     const foundUser: User | null = await this.findOne({id: userId});
     if(!foundUser) {
         throw new Error('no User found');
     }
 
-    const originPwd:string = foundUser.password;
-    const hashedPwd:string = await crypto.hashing(password);
-
-    return (originPwd === hashedPwd) ? foundUser : undefined;
+    const originPwd: string = foundUser.password;
+    const hashedPwd: string = await crypto.hashing(password);
+    if (originPwd !== hashedPwd) {
+        return undefined;
+    }
+    const updatedUser: User | null = await this.findOneAndUpdate({id: userId}, {$set: {accessTime: new Date()}})
+    return updatedUser;
 };
 
 export interface UserModel extends Model<User> {
     createMember(params: any): User,
+    updateMember(params: any): User,
     login(params: any): User
 }
 

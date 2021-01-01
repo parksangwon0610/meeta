@@ -6,7 +6,10 @@ export const connect = () => {
             MONGO_URI,
             {
                 useNewUrlParser: true,
-                useUnifiedTopology: true
+                useUnifiedTopology: true,
+                // Make Mongoose use `findOneAndUpdate()`. Note that this option is `true`
+                useFindAndModify: false,
+                useCreateIndex: true
             }
         );
     

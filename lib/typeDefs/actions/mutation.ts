@@ -6,6 +6,10 @@ export const Query = gql`
         password: String!
         name: String!
     },
+    input UpdateUserInput {
+        id: String!
+        name: String
+    },
     input LoginUserInput {
         id: String!
         password: String!
@@ -15,7 +19,9 @@ export const Query = gql`
         createUser(
             input: CreateUserInput
         ): User
-        # updateUser: User
+        updateUser(
+            input: UpdateUserInput
+        ): User
         # deleteUser: User
         loginUser (
             input: LoginUserInput
