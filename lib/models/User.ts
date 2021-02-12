@@ -11,6 +11,7 @@ const UserSchema = new Schema({
     name: {type: String, required: true},
     created: {type: Date, default: Date.now},
     accessTime: {type: Date, default: Date.now},
+    token: {type: String}
 });
 
 export interface User extends Document {
@@ -27,9 +28,9 @@ export interface AdministratorUser extends User {
 
 
 /**
- * 사용자를 생성합니다. id, password, name 을 required input 으로, 
+ * 사용자를 생성합니다. id, password, name 을 required input 으로,
  * password 는 해시를 거친 뒤 저장합니다.
- * 
+ *
  * @params params CreateUserInput
  * @returns returns User
  */
@@ -55,7 +56,7 @@ UserSchema.statics.createMember = async function (
 
 /**
  * 사용자의 정보를 수정합니다. 현재는 name 만 수정가능
- * 
+ *
  */
 UserSchema.statics.updateMember = async function (
         this: Model<User>,
@@ -64,7 +65,7 @@ UserSchema.statics.updateMember = async function (
         const {
             id: userId,
             name: newName,
-            
+
         } = params.input;
 
         const updatedUser: User | null = await this.findOneAndUpdate(
@@ -99,10 +100,28 @@ UserSchema.statics.login = async function (this: Model<User>, params: any) {
     return updatedUser;
 };
 
+/**
+ * 사용자를 찾습니다.
+ * @param params {userId: string}
+ */
+UserSchema.statics.findUser = async function(this: Model<User>, params: any) {
+    const {
+        id: userId
+    } = params.input;
+
+    const foundUser: User | null = await this.findOne({id: userId});
+    if(!foundUser) {
+        throw new Error('no User found');
+    }
+
+    return foundUser;
+}
+
 export interface UserModel extends Model<User> {
     createMember(params: any): User,
     updateMember(params: any): User,
-    login(params: any): User
+    login(params: any): User,
+    findUser(params: any): User
 }
 
 export default model<User, UserModel>('user', UserSchema);

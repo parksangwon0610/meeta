@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const crypto = require('../utils/cryptoUtils');
-
+const calc = require('../utils/calcUtils');
 const RoomSchema = new Schema({
     name: {type: String, required: true},
     type: {
@@ -64,7 +64,7 @@ RoomSchema.statics.createRoom = async function (this: Model<Room>, params: any) 
     } = params.input;
 
     const { turnTime, memberCount, commentCycle } = info;
-    const totalTime: number = turnTime * memberCount * commentCycle;
+    const totalTime: number = calc.getTotalTime({turnTime, memberCount, commentCycle});
     const infoSet = {...info, totalTime};
 
     const createdRoom: Room = await new this({

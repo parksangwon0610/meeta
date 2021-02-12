@@ -7,6 +7,10 @@ export const Query = gql`
         password: String!
         name: String!
     },
+    type CreateUserPayload {
+        id: String!
+        token: String!
+    },
     input UpdateUserInput {
         id: String!
         name: String
@@ -15,7 +19,11 @@ export const Query = gql`
         id: String!
         password: String!
     },
-
+    type LoginUserPayload {
+        id: String!
+        token: String!
+    }
+    
     # Room Input Type
     input CreateRoomInput {
         name: String!
@@ -31,9 +39,9 @@ export const Query = gql`
 
     type Mutation {
         # User
-        createUser(input: CreateUserInput): User
+        createUser(input: CreateUserInput): CreateUserPayload
         updateUser(input: UpdateUserInput): User
-        loginUser(input: LoginUserInput): User
+        loginUser(input: LoginUserInput): LoginUserPayload
         # Room
         createRoom(input: CreateRoomInput): Room
     }
