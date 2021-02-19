@@ -1,10 +1,11 @@
 const { merge } = require('lodash');
 
 const User = require('./user');
+const Subscription = require('./subscription');
 
 export const resolvers = merge(
-    User.resolvers
+    User.resolvers,
+    Subscription.resolvers
 );
 
-// module.exports = resolvers;
 export default resolvers;

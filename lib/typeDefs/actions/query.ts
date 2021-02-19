@@ -5,6 +5,6 @@ export const Query = gql`
         user: User
         users: [User]
     }
-`
+`;
 
 export default Query;

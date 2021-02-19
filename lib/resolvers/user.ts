@@ -1,9 +1,11 @@
 import User from '../models/User';
 import Room from '../models/Room';
-
 import * as jwt from 'jsonwebtoken';
 
+import { publish } from '../utils/pubsubUtils';
+
 const JWT_SECRET_KEY = "SECRET_KEY";
+const TEST_TRIGGER_NAME = 'myTrigger';
 
 export const resolvers = {
     Query: {
@@ -12,6 +14,13 @@ export const resolvers = {
         }
     },
     Mutation: {
+        addMessage: async (root:any, args:any, context: any) => {
+            const { message } = args.input;
+            publish(TEST_TRIGGER_NAME, {
+                listenMessage: message,
+            })
+            return 'success';
+        },
         createUser: async (root: any, args: any, context: any) => {
             const createdUser = await User.createMember(args);
             const token = await jwt.sign(

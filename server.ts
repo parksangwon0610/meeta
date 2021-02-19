@@ -14,16 +14,19 @@ const JWT_SECRET_KEY = "SECRET_KEY";
 const server = new ApolloServer({
     typeDefs,
     resolvers,
+    // subscriptions: {
+    //     path: '/subscriptions'
+    // },
     context: ({req, res}) => {
-        if(req.body.operationName !== 'LOGIN') {
-            const token = req.headers.authorization || '';
-            try {
-                const decode: any = jwt.verify(token, JWT_SECRET_KEY);
-            } catch (err) {
-                console.log(err);
-                throw new ApolloError('FORBIDDEN');
-            };
-        }
+        // if(req.body.operationName !== 'LOGIN') {
+        //     const token = req.headers.authorization || '';
+        //     try {
+        //         const decode: any = jwt.verify(token, JWT_SECRET_KEY);
+        //     } catch (err) {
+        //         console.log(err);
+        //         throw new ApolloError('FORBIDDEN');
+        //     };
+        // }
     }
 });
 

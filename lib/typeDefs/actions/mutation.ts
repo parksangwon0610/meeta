@@ -36,8 +36,13 @@ export const Query = gql`
         memberCount: Int!
         commentCycle: Int!
     }
+    input addMessageInput {
+        message: String
+    }
 
     type Mutation {
+        # Message 
+        addMessage(input: addMessageInput): String
         # User
         createUser(input: CreateUserInput): CreateUserPayload
         updateUser(input: UpdateUserInput): User
