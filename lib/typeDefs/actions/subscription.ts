@@ -1,6 +1,6 @@
 import { gql } from 'apollo-server';
 
-export const Query = gql`    
+export const Subscription = gql`    
     input listenMessageInput {
         trigger: String!
     }
@@ -12,4 +12,4 @@ export const Query = gql`
     }
 `
 
-export default Query;
+export default Subscription;
