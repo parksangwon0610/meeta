@@ -37,6 +37,7 @@ export const Query = gql`
         commentCycle: Int!
     }
     input addMessageInput {
+        trigger: String!
         message: String
     }
 

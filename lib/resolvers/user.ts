@@ -15,9 +15,10 @@ export const resolvers = {
     },
     Mutation: {
         addMessage: async (root:any, args:any, context: any) => {
-            const { message } = args.input;
-            publish(TEST_TRIGGER_NAME, {
-                listenMessage: message,
+            const { trigger, message } = args.input;
+            
+            publish(trigger, {
+                listenRoom: {message},
             })
             return 'success';
         },
