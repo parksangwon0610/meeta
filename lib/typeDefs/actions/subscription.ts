@@ -8,7 +8,6 @@ export const Subscription = gql`
         message: String
     }
     type Subscription {
-        listenMessage: String
         listenRoom (input: listenRoomInput): listenRoomPayload
     }
 `
