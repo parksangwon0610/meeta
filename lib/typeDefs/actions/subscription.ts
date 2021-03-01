@@ -1,9 +1,6 @@
 import { gql } from 'apollo-server';
 
 export const Subscription = gql`    
-    input listenRoomInput {
-        roomId: String!
-    }
     type listenRoomPayload {
         message: String
     }

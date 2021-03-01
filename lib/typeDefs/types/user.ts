@@ -9,6 +9,14 @@ export const typeDefs = gql`
         accessTime: Float
         # status: 
     }
+    type CreateUserPayload {
+        id: String!
+        token: String!
+    },
+    type LoginUserPayload {
+        id: String!
+        token: String!
+    }
 `
 
 export default typeDefs;

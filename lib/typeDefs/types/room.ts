@@ -15,6 +15,11 @@ export const typeDefs = gql`
         memberCount: Int
         commentCycle: Int
     }
+
+    type DeleteRoomPayload {
+        roomId: String!
+        result: Boolean
+    }
 `
 
 export default typeDefs;
