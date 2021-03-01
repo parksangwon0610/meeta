@@ -76,6 +76,23 @@ RoomSchema.statics.createRoom = async function (this: Model<Room>, params: any) 
     return createdRoom;
 }
 
+/**
+ * 회의방을 찾습니다.
+ * @param params {roomId: string}
+ */
+RoomSchema.statics.findRoom = async function(this: Model<Room>, params: any) {
+    const {
+        roomId
+    } = params.input;
+
+    const foundRoom: Room | null = await this.findOne({_id: roomId});
+    if(!foundRoom) {
+        throw new Error('no Room found');
+    }
+
+    return foundRoom;
+}
+
 RoomSchema.statics.deleteRoom = async function (this: Model<Room>, params: any) {
     const {
         roomId
@@ -90,6 +107,7 @@ RoomSchema.statics.deleteRoom = async function (this: Model<Room>, params: any) 
 
 export interface RoomModel extends Model<Room> {
     createRoom(params: any): Room
+    findRoom(params: any): Room
     deleteRoom(params: any): any
 }
 
