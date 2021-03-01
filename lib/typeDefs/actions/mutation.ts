@@ -36,6 +36,16 @@ export const Query = gql`
         memberCount: Int!
         commentCycle: Int!
     }
+
+    input DeleteRoomInput {
+        roomId: String!
+    }
+    type DeleteRoomPayload {
+        roomId: String!
+        result: Boolean
+    }
+
+    # deprecated Subscription Sample  
     input addMessageInput {
         trigger: String!
         message: String
@@ -50,6 +60,7 @@ export const Query = gql`
         loginUser(input: LoginUserInput): LoginUserPayload
         # Room
         createRoom(input: CreateRoomInput): Room
+        deleteRoom(input: DeleteRoomInput): DeleteRoomPayload
     }
 `
 

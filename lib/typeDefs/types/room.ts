@@ -2,6 +2,7 @@ import { gql } from 'apollo-server';
 
 export const typeDefs = gql`
     type Room {
+        _id: String!
         name: String!
         password: String
         created: Float

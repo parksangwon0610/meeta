@@ -76,8 +76,21 @@ RoomSchema.statics.createRoom = async function (this: Model<Room>, params: any) 
     return createdRoom;
 }
 
+RoomSchema.statics.deleteRoom = async function (this: Model<Room>, params: any) {
+    const {
+        roomId
+    } = params.input;
+    
+    const deleteResult: {n:number, ok:number, deletedCount:number} = await this.deleteOne({_id: roomId});
+    if(deleteResult.deletedCount > 0) {
+        return {roomId, result: true};
+    }
+    return {roomId, result: false};
+}
+
 export interface RoomModel extends Model<Room> {
     createRoom(params: any): Room
+    deleteRoom(params: any): any
 }
 
 export default model<Room, RoomModel>('room', RoomSchema);

@@ -42,7 +42,7 @@ export const resolvers = {
             return updatedUser;
         },
         loginUser: async (root: any, args: any, context: any) => {
-            const loginUser = User.login(args);
+            const loginUser = await User.login(args);
             const token = await jwt.sign(
                 {id: loginUser.id},
                 JWT_SECRET_KEY,
@@ -50,10 +50,6 @@ export const resolvers = {
             );
 
             return {id: loginUser.id, token: token};
-        },
-        createRoom: (root: any, args: any, context: any) => {
-            const createdRoom = Room.createRoom(args);
-            return createdRoom;
         }
     }
 }

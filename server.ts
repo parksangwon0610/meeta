@@ -18,15 +18,20 @@ const server = new ApolloServer({
     //     path: '/subscriptions'
     // },
     context: ({req, res}) => {
-        // if(req.body.operationName !== 'LOGIN') {
-        //     const token = req.headers.authorization || '';
-        //     try {
-        //         const decode: any = jwt.verify(token, JWT_SECRET_KEY);
-        //     } catch (err) {
-        //         console.log(err);
-        //         throw new ApolloError('FORBIDDEN');
-        //     };
-        // }
+        if(req.body.operationName === 'IntrospectionQuery') {
+            return;
+        }
+        if(req.body.operationName !== 'LOGIN') {
+            const token = req.headers.authorization || '';
+            const splitedToken = token.split(' ');
+            try {
+                const decode: any = jwt.verify(splitedToken[1], JWT_SECRET_KEY);
+            } catch (err) {
+                console.log(err);
+                throw new ApolloError('FORBIDDEN');
+            };
+            return;
+        }
     }
 });
 
