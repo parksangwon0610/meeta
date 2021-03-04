@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 
 const crypto = require('../utils/cryptoUtils');
 const calc = require('../utils/calcUtils');
+
 const RoomSchema = new Schema({
     name: {type: String, required: true},
     type: {
@@ -21,6 +22,12 @@ const RoomSchema = new Schema({
         memberCount: {type: Number, required: true},
         commentCycle: {type: Number, required: true},
     },
+    _members: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+        }
+    ]
 });
 
 enum ROOM_TYPE_ENUM {
@@ -41,6 +48,7 @@ export interface Room extends Document {
     created?: Date;
     password: string;
     info: RoomInfo;
+    _members: Array<Types.ObjectId>;
 }
 
 export interface PrivateRoom extends Room {
@@ -105,10 +113,37 @@ RoomSchema.statics.deleteRoom = async function (this: Model<Room>, params: any) 
     return {roomId, result: false};
 }
 
+RoomSchema.statics.joinRoom = async function (this: Model<Room>, params: any) {
+    const {
+        roomId,
+        userId
+    } = params.input;
+    
+    const foundRoom: Room | null = await this.findOne({_id: roomId});
+
+    if (!foundRoom) {
+        throw new Error('No Room found');
+    } 
+    const registrants = foundRoom._members;
+
+    let joinedRoom = foundRoom;
+    if (!registrants.includes(userId)) {
+        registrants.push(userId);
+        await this.updateOne(
+            {_id: roomId},
+            {$set: {_members: registrants}},
+            {new: true}
+        );
+    }
+
+    return joinedRoom;
+}
+
 export interface RoomModel extends Model<Room> {
     createRoom(params: any): Room
     findRoom(params: any): Room
     deleteRoom(params: any): any
+    joinRoom(params: any): any
 }
 
 export default model<Room, RoomModel>('room', RoomSchema);

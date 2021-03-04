@@ -8,6 +8,7 @@ export const typeDefs = gql`
         created: Float
         type: RoomType
         info: RoomInfo
+        _members: [ID]
     }
     type RoomInfo {
         totalTime: Int

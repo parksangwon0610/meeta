@@ -11,6 +11,7 @@ export const Query = gql`
         # Room
         createRoom(input: CreateRoomInput): Room
         deleteRoom(input: DeleteRoomInput): DeleteRoomPayload
+        joinRoom(input: JoinRoomInput): Room
     }
 `
 

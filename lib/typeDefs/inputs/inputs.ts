@@ -1,6 +1,7 @@
 import { gql } from 'apollo-server';
 
 const inputGQL = gql`
+    # User Input Type
     input CreateUserInput {
         id: String!
         password: String!
@@ -14,6 +15,8 @@ const inputGQL = gql`
         id: String!
         password: String!
     },
+
+    # Room Input Type
     input CreateRoomInput {
         name: String!
         type: RoomType
@@ -30,9 +33,15 @@ const inputGQL = gql`
         roomId: String!
     }
 
+    input JoinRoomInput {
+        roomId: String!
+        userId: String!
+    }
+
     input RoomInput {
         roomId: String
     }
+    
     # deprecated Subscription Sample  
     input listenRoomInput {
         roomId: String!
