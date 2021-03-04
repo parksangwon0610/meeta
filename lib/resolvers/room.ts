@@ -16,6 +16,10 @@ export const resolvers = {
         deleteRoom: async (root: any, args: any, context: any) => {
             const deletedRoom = await Room.deleteRoom(args);
             return deletedRoom;
+        },
+        joinRoom: async (root: any, args: any, context: any) => {
+            const joinedRoom = await Room.joinRoom(args);
+            return joinedRoom;
         }
     }
 }

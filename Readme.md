@@ -18,5 +18,8 @@ $ yarn develop
 * login
 ### Room
 * createRoom
+* deleteRoom
+* joinRoom
 
 ## SUBSCRIPTION
+* listenRoom
