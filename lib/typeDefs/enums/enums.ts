@@ -5,6 +5,11 @@ export const Enums = gql `
         PUBLIC
         PRIVATE
     }
+    enum RoomStatus {
+        OPEN
+        PROGRESS
+        CLOSED
+    }
 ` 
 
 export default Enums;

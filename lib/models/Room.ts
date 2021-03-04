@@ -14,6 +14,12 @@ const RoomSchema = new Schema({
         default: 'PUBLIC',
         require: true
     },
+    status: {
+        type: String,
+        enum: ['OPEN', 'PROGRESS', 'CLOSED'],
+        default: 'OPEN',
+        require: true
+    },
     created: {type: Date, default: Date.now},
     password: {type: String},
     info: {
@@ -34,6 +40,11 @@ enum ROOM_TYPE_ENUM {
     PUBLIC = 'PUBLIC',
     PRIVATE = 'PRIVATE'
 }
+enum ROOM_STATUS_ENUM {
+    OPEN = 'OPEN',
+    PROGRESS = 'PROGRESS',
+    CLOSED = 'CLOSED'
+}
 
 type RoomInfo = {
     totalTime: number,
@@ -45,6 +56,7 @@ type RoomInfo = {
 export interface Room extends Document {
     name: string;
     type: ROOM_TYPE_ENUM;
+    status: ROOM_STATUS_ENUM;
     created?: Date;
     password: string;
     info: RoomInfo;

@@ -7,6 +7,7 @@ export const typeDefs = gql`
         password: String
         created: Float
         type: RoomType
+        status: RoomStatus
         info: RoomInfo
         _members: [ID]
     }
