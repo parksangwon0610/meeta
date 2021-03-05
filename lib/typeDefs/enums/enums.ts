@@ -7,7 +7,7 @@ export const Enums = gql `
     }
     enum RoomStatus {
         OPEN
-        PROGRESS
+        IN_PROGRESS
         CLOSED
     }
 ` 

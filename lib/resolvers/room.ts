@@ -20,6 +20,10 @@ export const resolvers = {
         joinRoom: async (root: any, args: any, context: any) => {
             const joinedRoom = await Room.joinRoom(args);
             return joinedRoom;
+        },
+        startMeetingRoom: async (root: any, args: any, context: any) => {
+            const room = await Room.startMeetingRoom(args);
+            return room;
         }
     }
 }

@@ -1,10 +1,12 @@
 import { Document, Types, Model, model } from "mongoose";
+import * as mongooseResultType from "./types/mongo";
+import mongoose from 'mongoose';
 
-const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const crypto = require('../utils/cryptoUtils');
 const calc = require('../utils/calcUtils');
+const pubsub = require('../utils/pubsubUtils');
 
 const RoomSchema = new Schema({
     name: {type: String, required: true},
@@ -16,7 +18,7 @@ const RoomSchema = new Schema({
     },
     status: {
         type: String,
-        enum: ['OPEN', 'PROGRESS', 'CLOSED'],
+        enum: ['OPEN', 'IN_PROGRESS', 'CLOSED'],
         default: 'OPEN',
         require: true
     },
@@ -42,7 +44,7 @@ enum ROOM_TYPE_ENUM {
 }
 enum ROOM_STATUS_ENUM {
     OPEN = 'OPEN',
-    PROGRESS = 'PROGRESS',
+    IN_PROGRESS = 'IN_PROGRESS',
     CLOSED = 'CLOSED'
 }
 
@@ -151,11 +153,32 @@ RoomSchema.statics.joinRoom = async function (this: Model<Room>, params: any) {
     return joinedRoom;
 }
 
+RoomSchema.statics.startMeetingRoom = async function (this: Model<Room>, params: any) {
+    const {
+        roomId
+    } = params.input;
+
+    const updated: mongooseResultType.IUpdate = await this.updateOne(
+        {_id: roomId}, 
+        {$set: {status: ROOM_STATUS_ENUM.IN_PROGRESS}}, 
+        {new: true}
+    )
+    console.log(' 🇰🇷🎉 ~ : updated', updated)
+
+    if(updated.deletedCount === 0) {
+        throw new Error('Faild Start');
+    }
+    
+    pubsub.publish(roomId, {status: ROOM_STATUS_ENUM.IN_PROGRESS});
+    return {roomId, status: ROOM_STATUS_ENUM.IN_PROGRESS};
+}
+
 export interface RoomModel extends Model<Room> {
     createRoom(params: any): Room
     findRoom(params: any): Room
     deleteRoom(params: any): any
     joinRoom(params: any): any
+    startMeetingRoom(params: any): any
 }
 
 export default model<Room, RoomModel>('room', RoomSchema);
