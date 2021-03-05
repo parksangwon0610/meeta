@@ -163,7 +163,6 @@ RoomSchema.statics.startMeetingRoom = async function (this: Model<Room>, params:
         {$set: {status: ROOM_STATUS_ENUM.IN_PROGRESS}}, 
         {new: true}
     )
-    console.log(' 🇰🇷🎉 ~ : updated', updated)
 
     if(updated.deletedCount === 0) {
         throw new Error('Faild Start');
