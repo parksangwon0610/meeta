@@ -1,3 +1,5 @@
+'use strict'
+
 import { Document, Types, Model, model } from "mongoose";
 import * as mongooseResultType from "./types/mongo";
 import mongoose from 'mongoose';

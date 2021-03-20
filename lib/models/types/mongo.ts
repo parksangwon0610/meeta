@@ -1,3 +1,5 @@
+'use strict'
+
 export interface IUpdate {
     n: number, 
     ok: number, 

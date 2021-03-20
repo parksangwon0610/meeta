@@ -1,3 +1,5 @@
+'use strict'
+
 import Room from '../models/Room';
 
 export const resolvers = {

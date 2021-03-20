@@ -1,3 +1,5 @@
+'use strict'
+
 import { gql } from 'apollo-server';
 
 export const Query = gql`
