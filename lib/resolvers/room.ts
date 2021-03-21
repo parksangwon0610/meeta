@@ -26,7 +26,11 @@ export const resolvers = {
         startMeetingRoom: async (root: any, args: any, context: any) => {
             const room = await Room.startMeetingRoom(args);
             return room;
-        }
+        }, 
+        stopMeetingRoom: async (root: any, args: any, context: any) => {
+            const room = await Room.stopMeetingRoom(args);
+            return room;
+        },
     }
 }
 

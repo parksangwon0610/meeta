@@ -174,12 +174,32 @@ RoomSchema.statics.startMeetingRoom = async function (this: Model<Room>, params:
     return {roomId, status: ROOM_STATUS_ENUM.IN_PROGRESS};
 }
 
+RoomSchema.statics.stopMeetingRoom = async function (this: Model<Room>, params: any) {
+    const {
+        roomId
+    } = params.input;
+
+    const updated: mongooseResultType.IUpdate = await this.updateOne(
+        {_id: roomId}, 
+        {$set: {status: ROOM_STATUS_ENUM.CLOSED}}, 
+        {new: true}
+    )
+
+    if (updated.deletedCount === 0) {
+        throw new Error('Faild Stop');
+    }
+
+    pubsub.publish(roomId, {status: ROOM_STATUS_ENUM.CLOSED});
+    return {roomId, status: ROOM_STATUS_ENUM.CLOSED};
+}
+
 export interface RoomModel extends Model<Room> {
     createRoom(params: any): Room
     findRoom(params: any): Room
     deleteRoom(params: any): any
     joinRoom(params: any): any
     startMeetingRoom(params: any): any
+    stopMeetingRoom(params: any): any
 }
 
 export default model<Room, RoomModel>('room', RoomSchema);
