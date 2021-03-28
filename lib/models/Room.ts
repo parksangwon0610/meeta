@@ -1,6 +1,7 @@
 'use strict'
 
 import { Document, Types, Model, model } from "mongoose";
+import { UserModel } from "./User";
 import * as mongooseResultType from "./types/mongo";
 import mongoose from 'mongoose';
 
@@ -32,6 +33,12 @@ const RoomSchema = new Schema({
         memberCount: {type: Number, required: true},
         commentCycle: {type: Number, required: true},
     },
+    _reserveQueue: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+        }
+    ],
     _members: [
         {
             type: Schema.Types.ObjectId,
@@ -64,6 +71,7 @@ export interface Room extends Document {
     created?: Date;
     password: string;
     info: RoomInfo;
+    _reserveQueue: Array<Types.ObjectId>;
     _members: Array<Types.ObjectId>;
 }
 
@@ -193,6 +201,31 @@ RoomSchema.statics.stopMeetingRoom = async function (this: Model<Room>, params: 
     return {roomId, status: ROOM_STATUS_ENUM.CLOSED};
 }
 
+RoomSchema.statics.reserveTurn = async function (this: Model<Room>, params: any) {
+    const {
+        roomId,
+        memberId
+    } = params.input;
+
+    const foundRoom: Room = await this.findOne({_id: roomId});
+    const { _members: originMembers, _reserveQueue: reserveMembers } = foundRoom;
+
+    if (originMembers.includes(memberId)) {
+        reserveMembers.push();
+    }
+}
+RoomSchema.statics.nextTurn = async function (this: Model<Room>, params: any) {
+    const {
+        roomId,
+        memberId
+    } = params.input;
+
+    const foundRoom: Room = await this.findOne({_id: roomId});
+    const { _reserveQueue: reserveMembers } = foundRoom;
+    const nextMember = reserveMembers.shift();
+    return nextMember;
+}
+
 export interface RoomModel extends Model<Room> {
     createRoom(params: any): Room
     findRoom(params: any): Room
@@ -200,6 +233,8 @@ export interface RoomModel extends Model<Room> {
     joinRoom(params: any): any
     startMeetingRoom(params: any): any
     stopMeetingRoom(params: any): any
+    reserveTurn(param: any): any
+    nextTurn(param: any): UserModel
 }
 
 export default model<Room, RoomModel>('room', RoomSchema);
