@@ -27,6 +27,10 @@ export const typeDefs = gql`
         roomId: String
         status: RoomStatus
     }
+    type StopMeetingPayload {
+        roomId: String
+        status: RoomStatus
+    }
 `
 
 export default typeDefs;

@@ -10,3 +10,7 @@ export const hashing = (data: string) => {
 
     return bs58.encode(hash.digest());
 }
+
+console.log('this', this);
+console.log('module.exports', module.exports);
+console.log('exports', exports);

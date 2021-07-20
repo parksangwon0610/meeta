@@ -207,12 +207,12 @@ RoomSchema.statics.reserveTurn = async function (this: Model<Room>, params: any)
         memberId
     } = params.input;
 
-    const foundRoom: Room = await this.findOne({_id: roomId});
-    const { _members: originMembers, _reserveQueue: reserveMembers } = foundRoom;
+    // const foundRoom = await this.findOne({_id: roomId});
+    // const { _members: originMembers, _reserveQueue: reserveMembers } = foundRoom;
 
-    if (originMembers.includes(memberId)) {
-        reserveMembers.push();
-    }
+    // if (originMembers.includes(memberId)) {
+    //     reserveMembers.push();
+    // }
 }
 RoomSchema.statics.nextTurn = async function (this: Model<Room>, params: any) {
     const {
@@ -220,10 +220,10 @@ RoomSchema.statics.nextTurn = async function (this: Model<Room>, params: any) {
         memberId
     } = params.input;
 
-    const foundRoom: Room = await this.findOne({_id: roomId});
-    const { _reserveQueue: reserveMembers } = foundRoom;
-    const nextMember = reserveMembers.shift();
-    return nextMember;
+    // const foundRoom = await this.findOne({_id: roomId});
+    // const { _reserveQueue: reserveMembers } = foundRoom;
+    // const nextMember = reserveMembers.shift();
+    // return nextMember;
 }
 
 export interface RoomModel extends Model<Room> {

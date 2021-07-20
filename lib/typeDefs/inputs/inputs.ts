@@ -45,6 +45,9 @@ const inputGQL = gql`
     input StartMeetingInput {
         roomId: String
     }
+    input StopMeetingInput {
+        roomId: String
+    }
     
     # deprecated Subscription Sample  
     input listenRoomInput {
